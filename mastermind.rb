@@ -1,5 +1,5 @@
 class Mastermind
-  attr_accessor :round_number, :valid_guess_entered, :game_end, :turn_end, :clue_history, :guess_history
+  attr_accessor :round_number, :valid_guess_entered, :game_end, :turn_end, :clue_history, :guess_history, :game_won
   attr_reader :secret_code, :possible_numbers, :number_of_rounds, :size_of_code, :blanks_allowed, :duplicates_allowed
 
   def initialize(possible_numbers, size_of_code, number_of_rounds)
@@ -15,6 +15,7 @@ class Mastermind
     @turn_end = false
     @guess_history = []
     @clue_history = []
+    @game_won = false
   end
 
   def generete_custom_secret_code(code)
@@ -33,8 +34,9 @@ class Mastermind
 
   def display_history
     @guess_history.each_with_index do |guess,index|
-      puts "Guess: #{guess} || Clue: #{@clue_history[index]}"
+      puts "Round #{index + 1} - Guess: #{guess} || Clue: #{@clue_history[index]}"
     end
+    puts ''
   end
 
   def validate_code(code)
@@ -57,21 +59,9 @@ class Mastermind
         results[index] = '.'
       end
     end
-    results
+    @game_won = true if results == ['O','O','O','O']
+    results.shuffle
   end
-=begin
-    @secret_code.each do |i|
-      if guess[i] == @secret_code[i]
-        resuts[i] = 'O'
-      elsif @secret_code.include?(guess[i])
-        resuts[i] = 'X'
-      else
-        resuts[i] = '.'
-      end
-    end
-    results
-  end
-=end
 
   private
 
@@ -141,5 +131,16 @@ until game.game_end
   game.guess_history.push(guess)
   game.clue_history.push(game.check_guess(guess))
   game.display_history
-
+  if game.game_won
+    game.game_end = true
+    puts "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    puts '!Congratulations!. You have cracked the code!'
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n"
+  end
+  game.round_number += 1
+  if game.round_number > game.number_of_rounds
+    game.game_end = true
+    puts "\nGame Over!"
+    puts 'You failed the crack the code before time ran out!'
+  end
 end
