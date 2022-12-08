@@ -33,6 +33,7 @@ class Mastermind
     @code_entry_error_msg += check_code_valid_numbers(code).to_s
     @code_entry_error_msg += check_code_numeric(code).to_s
     @code_entry_error_msg += check_code_length(code).to_s
+    @code_entry_error_msg += check_code_unqiue_numbers(code).to_s
     @code_entry_error_msg
   end
 
@@ -66,6 +67,13 @@ class Mastermind
       "Code length must be #{@size_of_code} \n"
     end
   end
+
+  def check_code_unqiue_numbers(code)
+    unless code == code.uniq
+      @valid_guess_entered = false
+      "Numbers must all be unique.\n"
+    end
+  end
   # end class Board
 end
 
@@ -87,7 +95,7 @@ until game.valid_guess_entered
   game.valid_guess_entered = true # will be set to false if game.validate_code fails
   puts "Round #{game.round_number}: Enter your guess."
   guess = game.enter_code
-  puts "\nYou entered #{guess}"
+  puts "\nYou entered #{guess}\n\n"
   valid_code_msg = game.validate_code(guess)
   valid_code_msg += "Only enter numbers 1 thru #{game.possible_numbers}. \n\n" unless game.valid_guess_entered
   puts valid_code_msg
