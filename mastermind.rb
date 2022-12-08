@@ -31,6 +31,12 @@ class Mastermind
     gets.chomp.split('')
   end
 
+  def display_history
+    @guess_history.each_with_index do |guess,index|
+      puts "Guess: #{guess} || Clue: #{@clue_history[index]}"
+    end
+  end
+
   def validate_code(code)
     @code_entry_error_msg = ''
     @code_entry_error_msg += check_code_valid_numbers(code).to_s
@@ -133,5 +139,7 @@ until game.game_end
   end
   game.valid_guess_entered = false
   game.guess_history.push(guess)
-  p game.check_guess(guess)
+  game.clue_history.push(game.check_guess(guess))
+  game.display_history
+
 end
