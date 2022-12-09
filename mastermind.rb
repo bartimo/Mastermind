@@ -25,7 +25,7 @@ class Mastermind
 
   def generete_random_secret_code
     @secret_code = create_secret_code
-    p @secret_code
+    # p @secret_code
   end
 
   def enter_code
@@ -104,7 +104,7 @@ class Mastermind
 end
 
 # Begin Main Program
-game = Mastermind.new(6,4,11) # number of colors / size of code / number of rounds
+game = Mastermind.new(7,4,11) # number of colors / size of code / number of rounds
 game.generete_random_secret_code
 
 puts ''
@@ -138,7 +138,7 @@ until game.game_end
     puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n"
   end
   game.round_number += 1
-  if game.round_number > game.number_of_rounds
+  if game.round_number > game.number_of_rounds && game.game_won != true
     game.game_end = true
     puts "\nGame Over!"
     puts 'You failed the crack the code before time ran out!'
